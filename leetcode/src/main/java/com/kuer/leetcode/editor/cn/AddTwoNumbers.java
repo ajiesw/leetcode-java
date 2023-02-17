@@ -74,11 +74,66 @@ public class AddTwoNumbers {
      */
     class Solution {
         public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
-            ListNode sum = new ListNode();
-            addTwoNumbers(sum, l1, l2, false);
+            ListNode sum = null;
+            sum = loop(l1, l2, sum);
+//            addTwoNumbers(sum, l1, l2, false);
             return sum;
         }
 
+        private ListNode loop(ListNode l1, ListNode l2, ListNode sum) {
+            ListNode node1 = l1;
+            ListNode node2 = l2;
+            ListNode lastSum = null;
+            boolean carry = false;
+            while (carry || node1 != null || node2 != null){
+                int val1 = getNodeVal(node1);
+                int val2 = getNodeVal(node2);
+                int sumVal = carry ? val1 + val2 + 1 : val1 + val2;
+                if (sumVal / 10 > 0){
+                    carry = true;
+                }else {
+                    carry = false;
+                }
+                if (sum == null){
+                    sum = new ListNode(sumVal % 10);
+                    lastSum = sum;
+                }else {
+                    lastSum.next = new ListNode(sumVal % 10);
+                    lastSum = getNextNode(lastSum);
+                }
+                node1 = getNextNode(node1);
+                node2 = getNextNode(node2);
+            }
+            return sum;
+        }
+
+        private ListNode getNextNode(ListNode node){
+            if (node == null){
+                return null;
+            }
+            return node.next;
+        }
+
+        private int getNodeVal(ListNode node){
+            if (node == null){
+                return 0;
+            }
+            return node.val;
+        }
+
+        /**
+         *
+         * 递归方法
+         *
+         * @description:
+         * @param sum
+         * @param carry
+         * @param l1
+         * @param l2
+         * @return:
+         * @author: wangkj6
+         * @time: 2023/2/17 16:48
+         */
         private void addTwoNumbers(ListNode sum,ListNode l1, ListNode l2, boolean carry){
             ListNode l1Next = null;
             ListNode l2Next = null;
