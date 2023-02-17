@@ -1,0 +1,30 @@
+### 解题思路
+
+1. 求出“另一半”，之后去找值，比遍历求和要省时。优秀的思路。
+2. nums 代表的 int[] 是数组类型，而非类，故用属性而非类方法调用 length。
+3. 找值时，用 HashMap 边插入边找，能省去一个遍历过程，大大降低耗时。优秀的思路。
+4. HashMap 配合 Integer 而非 int。一个是类，一个是数据类型。注意new后面有个括号。
+5. 理解 Hash 散列表，键值对 Key-Value，Key 要保证唯一，故只存在由 Key 求 Value 的 get 方法。
+6. 已知答案唯一，同一个值不会对应两个数组下标。所以我们用值找下标，数组值才是 Key，反过来做会非常麻烦。这里略反直觉。
+
+### 代码
+
+* java
+
+```java
+class Solution {
+    public int[] twoSum(int[] nums, int target) {
+        int len = nums.length;
+        HashMap<Integer, Integer> numHash = new HashMap<Integer, Integer>();
+        for(int i = 0; i < len; i++) {
+            int res = target - nums[i];
+            if(numHash.containsKey(res)) {
+                return new int[]{i, numHash.get(res)};
+            }
+            numHash.put(nums[i], i);
+        }
+        return new int[]{-1,-1};
+    }
+}
+```
+
