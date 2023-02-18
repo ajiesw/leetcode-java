@@ -52,7 +52,7 @@ import java.util.Set;
 public class LongestSubstringWithoutRepeatingCharacters{
   public static void main(String[] args) {
        Solution solution = new LongestSubstringWithoutRepeatingCharacters().new Solution();
-      int max = solution.lengthOfLongestSubstring("bbbbb");
+      int max = solution.lengthOfLongestSubstring("aab");
       System.out.println(max);
   }
 
@@ -96,9 +96,7 @@ class Solution {
             }
             right++;
         }
-        if (windows.size() == s.length()){
-            max = windows.size();
-        }
+        max = Math.max(max, windows.size());
         return max;
     }
 }
