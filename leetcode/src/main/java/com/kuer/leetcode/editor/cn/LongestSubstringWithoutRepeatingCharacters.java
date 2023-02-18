@@ -80,7 +80,6 @@ class Solution {
 
     private int getMaxCount(String s){
         int max = 0;
-        int left = 0;
         int right = 0;
         Map<Character, Integer> windows = new HashMap<>(16);
         while (right <= s.length() - 1){
