@@ -36,7 +36,7 @@
 // s 由英文字母、数字、符号和空格组成 
 // 
 //
-// Related Topics 哈希表 字符串 滑动窗口 👍 8725 👎 0
+// Related Topics 哈希表 字符串 滑动窗口 👍 8732 👎 0
 
 package com.kuer.leetcode.editor.cn;
 
@@ -47,59 +47,54 @@ import java.util.Set;
 
 /**
  * @author kuer
- * 2023-02-17 17:15:56
+ * 2023-02-19 00:36:08
  */
 public class LongestSubstringWithoutRepeatingCharacters{
-  public static void main(String[] args) {
-       Solution solution = new LongestSubstringWithoutRepeatingCharacters().new Solution();
-      int max = solution.lengthOfLongestSubstring("aab");
-      System.out.println(max);
-  }
-
-//leetcode submit region begin(Prohibit modification and deletion)
-class Solution {
-    public int lengthOfLongestSubstring(String s) {
-        return getMaxCount(s);
+    public static void main(String[] args) {
+        Solution solution = new LongestSubstringWithoutRepeatingCharacters().new Solution();
+        int max = solution.lengthOfLongestSubstring("abba");
+        System.out.println(max);
     }
 
-    private int getMaxLoop(String s) {
-        int max = 0;
-        for (int i = 0; i <= s.length() - 1; i++) {
-            Set<Character> set = new HashSet<>();
-            int tempMax = 0;
-            int setsize = 0;
-            while (setsize == tempMax && i + tempMax <= s.length() -1){
-                set.add(s.charAt(i + tempMax));
-                tempMax ++;
-                setsize = set.size();
-            }
-            max = Math.max(max, set.size());
+    //leetcode submit region begin(Prohibit modification and deletion)
+    class Solution {
+        public int lengthOfLongestSubstring(String s) {
+            return getMaxCount(s);
         }
-        return max;
-    }
 
-    private int getMaxCount(String s){
-        int max = 0;
-        int right = 0;
-        Map<Character, Integer> windows = new HashMap<>(16);
-        while (right <= s.length() - 1){
-            char c = s.charAt(right);
-            if (!windows.containsKey(c)){
-                windows.put(c, right);
-            }else {
-                Integer index = windows.get(c);
-                max = Math.max(max, windows.size());
-                windows.clear();
-                for (int i = index + 1; i <= right; i++) {
-                    windows.put(s.charAt(i), i);
+        private int getMaxLoop(String s) {
+            int max = 0;
+            for (int i = 0; i <= s.length() - 1; i++) {
+                Set<Character> set = new HashSet<>();
+                int tempMax = 0;
+                int setsize = 0;
+                while (setsize == tempMax && i + tempMax <= s.length() -1){
+                    set.add(s.charAt(i + tempMax));
+                    tempMax ++;
+                    setsize = set.size();
                 }
+                max = Math.max(max, set.size());
             }
-            right++;
+            return max;
         }
-        max = Math.max(max, windows.size());
-        return max;
+
+        private int getMaxCount(String s){
+            int max = 0;
+            int left = 0;
+            int right = 0;
+            Map<Character, Integer> windows = new HashMap<>(16);
+            while (right <= s.length() - 1){
+                char c = s.charAt(right);
+                if (windows.containsKey(c)){
+                    left = Math.max(windows.get(c) + 1, left);
+                }
+                max = Math.max(max, right - left + 1);
+                windows.put(c, right++);
+            }
+            return max;
+        }
     }
-}
 //leetcode submit region end(Prohibit modification and deletion)
+
 
 }
