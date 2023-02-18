@@ -40,7 +40,9 @@
 
 package com.kuer.leetcode.editor.cn;
 
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -50,20 +52,20 @@ import java.util.Set;
 public class LongestSubstringWithoutRepeatingCharacters{
   public static void main(String[] args) {
        Solution solution = new LongestSubstringWithoutRepeatingCharacters().new Solution();
-      int max = solution.lengthOfLongestSubstring(" ");
+      int max = solution.lengthOfLongestSubstring("bbbbb");
       System.out.println(max);
   }
+
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public int lengthOfLongestSubstring(String s) {
-        int max = getMaxLoop(s);
-        return max;
+        return getMaxCount(s);
     }
 
     private int getMaxLoop(String s) {
         int max = 0;
         for (int i = 0; i <= s.length() - 1; i++) {
-            Set<Character> set = new HashSet<Character>();
+            Set<Character> set = new HashSet<>();
             int tempMax = 0;
             int setsize = 0;
             while (setsize == tempMax && i + tempMax <= s.length() -1){
@@ -77,9 +79,26 @@ class Solution {
     }
 
     private int getMaxCount(String s){
-        int max = 1;
-        for (int i = 0; i <= s.length() - 1; i++){
-
+        int max = 0;
+        int left = 0;
+        int right = 0;
+        Map<Character, Integer> windows = new HashMap<>(16);
+        while (right <= s.length() - 1){
+            char c = s.charAt(right);
+            if (!windows.containsKey(c)){
+                windows.put(c, right);
+            }else {
+                Integer index = windows.get(c);
+                max = Math.max(max, windows.size());
+                windows.clear();
+                for (int i = index + 1; i <= right; i++) {
+                    windows.put(s.charAt(i), i);
+                }
+            }
+            right++;
+        }
+        if (windows.size() == s.length()){
+            max = windows.size();
         }
         return max;
     }
