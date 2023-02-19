@@ -1,0 +1,236 @@
+视频讲解：[【基础算法精讲 15】](https://www.bilibili.com/video/BV1xG4y1F7nC/)，制作不易，欢迎点赞~
+
+# 方法一：枚举选左括号还是右括号
+
+* [sol1-Python3]
+
+```py
+class Solution:
+    def generateParenthesis(self, n: int) -> List[str]:
+        m = n * 2
+        ans = []
+        path = [''] * m
+        def dfs(i: int, open: int) -> None:
+            if i == m:
+                ans.append(''.join(path))
+                return
+            if open < n:  # 可以填左括号
+                path[i] = '('
+                dfs(i + 1, open + 1)
+            if i - open < open:  # 可以填右括号
+                path[i] = ')'
+                dfs(i + 1, open)
+        dfs(0, 0)
+        return ans
+```
+
+* [sol1-Java]
+
+```java
+class Solution {
+    private int n;
+    private char[] path;
+    private final List<String> ans = new ArrayList<>();
+
+    public List<String> generateParenthesis(int n) {
+        this.n = n;
+        path = new char[n * 2];
+        dfs(0, 0);
+        return ans;
+    }
+
+    private void dfs(int i, int open) {
+        if (i == n * 2) {
+            ans.add(new String(path));
+            return;
+        }
+        if (open < n) { // 可以填左括号
+            path[i] = '(';
+            dfs(i + 1, open + 1);
+        }
+        if (i - open < open) { // 可以填右括号
+            path[i] = ')';
+            dfs(i + 1, open);
+        }
+    }
+}
+```
+
+* [sol1-C++]
+
+```cpp
+class Solution {
+public:
+    vector<string> generateParenthesis(int n) {
+        int m = n * 2;
+        vector<string> ans;
+        string path(m, 0);
+        function<void(int, int)> dfs = [&](int i, int open) {
+            if (i == m) {
+                ans.emplace_back(path);
+                return;
+            }
+            if (open < n) { // 可以填左括号
+                path[i] = '(';
+                dfs(i + 1, open + 1);
+            }
+            if (i - open < open) { // 可以填右括号
+                path[i] = ')';
+                dfs(i + 1, open);
+            }
+        };
+        dfs(0, 0);
+        return ans;
+    }
+};
+```
+
+* [sol1-Go]
+
+```go
+func generateParenthesis(n int) (ans []string) {
+    m := n * 2
+    path := make([]byte, m)
+    var dfs func(int, int)
+    dfs = func(i, open int) {
+        if i == m {
+            ans = append(ans, string(path))
+            return
+        }
+        if open < n { // 可以填左括号
+            path[i] = '('
+            dfs(i+1, open+1)
+        }
+        if i-open < open { // 可以填右括号
+            path[i] = ')'
+            dfs(i+1, open)
+        }
+    }
+    dfs(0, 0)
+    return
+}
+```
+
+#### 复杂度分析
+
+- 时间复杂度：分析回溯问题的时间复杂度，有一个通用公式：**路径长度**$\times$**搜索树的叶子数**。对于本题，它等于 $O(n\cdot C(2n,n))$。但由于左右括号的约束，实际上没有这么多叶子，根据 Catalan 数，只有 $\dfrac{C(2n,n)}{n+1}$ 个叶子节点，所以实际的时间复杂度为 $O(C(2n,n))$。此外，根据阶乘的 Stirling 公式，时间复杂度也可以表示为 $O\left(\dfrac{4^n}{\sqrt n}\right)$。
+- 空间复杂度：$O(n)$。
+
+# 方法二：枚举下一个左括号的位置
+
+* [sol2-Python3]
+
+```py
+class Solution:
+    def generateParenthesis(self, n: int) -> List[str]:
+        ans = []
+        path = []
+        # balance = 左括号个数 - 右括号个数
+        def dfs(i: int, balance: int) -> None:
+            if len(path) == n:
+                s = [')'] * (n * 2)
+                for j in path:
+                    s[j] = '('
+                ans.append(''.join(s))
+                return
+            # 可以填 0 到 balance 个右括号
+            for close in range(balance + 1):  # 填 close 个右括号
+                path.append(i + close)  # 填 1 个左括号
+                dfs(i + close + 1, balance - close + 1)
+                path.pop()
+        dfs(0, 0)
+        return ans
+```
+
+* [sol2-Java]
+
+```java
+class Solution {
+    private int n;
+    private final List<Integer> path = new ArrayList<>();
+    private final List<String> ans = new ArrayList<>();
+
+    public List<String> generateParenthesis(int n) {
+        this.n = n;
+        dfs(0, 0);
+        return ans;
+    }
+
+    // balance = 左括号个数 - 右括号个数
+    private void dfs(int i, int balance) {
+        if (path.size() == n) {
+            char[] s = new char[n * 2];
+            Arrays.fill(s, ')');
+            for (int j : path) s[j] = '(';
+            ans.add(new String(s));
+            return;
+        }
+        // 可以填 0 到 balance 个右括号
+        for (int close = 0; close <= balance; ++close) { // 填 close 个右括号
+            path.add(i + close); // 填 1 个左括号
+            dfs(i + close + 1, balance - close + 1);
+            path.remove(path.size() - 1);
+        }
+    }
+}
+```
+
+* [sol2-C++]
+
+```cpp
+class Solution {
+public:
+    vector<string> generateParenthesis(int n) {
+        vector<string> ans;
+        vector<int> path;
+        // balance = 左括号个数 - 右括号个数
+        function<void(int, int)> dfs = [&](int i, int balance) {
+            if (path.size() == n) {
+                string s(n * 2, ')');
+                for (int j : path) s[j] = '(';
+                ans.emplace_back(s);
+                return;
+            }
+            // 可以填 0 到 balance 个右括号
+            for (int close = 0; close <= balance; ++close) { // 填 close 个右括号
+                path.push_back(i + close); // 填 1 个左括号
+                dfs(i + close + 1, balance - close + 1);
+                path.pop_back();
+            }
+        };
+        dfs(0, 0);
+        return ans;
+    }
+};
+```
+
+* [sol2-Go]
+
+```go
+func generateParenthesis(n int) (ans []string) {
+    path := []int{}
+    var dfs func(int, int)
+    dfs = func(i, balance int) { // balance = 左括号个数 - 右括号个数
+        if len(path) == n {
+            s := bytes.Repeat([]byte{')'}, n*2)
+            for _, j := range path {
+                s[j] = '('
+            }
+            ans = append(ans, string(s))
+            return
+        }
+        // 可以填 0 到 balance 个右括号
+        for close := 0; close <= balance; close++ { // 填 close 个右括号
+            path = append(path, i+close) // 填 1 个左括号
+            dfs(i+close+1, balance-close+1)
+            path = path[:len(path)-1]
+        }
+    }
+    dfs(0, 0)
+    return
+}
+```
+
+#### 复杂度分析
+
+同方法一。
