@@ -1,0 +1,51 @@
+### 解题思路
+
+此处撰写解题思路
+
+### 代码
+
+* java
+
+```java
+class Solution {
+
+    int min = Integer.MAX_VALUE;
+
+    public int jump(int[] nums) {
+        int len = nums.length;
+
+        if (len <= 1) {
+            return 0;
+        }
+
+        int[] used = new int[len];
+        dfs(nums, used, len, 0, 1);
+
+
+        return min;
+    }
+
+    private void dfs(int[] nums, int[] used, int len, int index, int step) {
+        if (step >= min) {
+            return;
+        }
+
+        if (nums[index] + index + 1 >= len) {
+            min = Math.min(min, step);
+            return;
+        }
+
+        if (used[index]>step || used[index]==0) {
+            used[index] = step;
+
+            for (int i=nums[index]; i>=1; i--) {
+                dfs(nums, used, len, index+i, step+1);
+            }
+        }
+    }
+
+
+
+}
+```
+

@@ -1,0 +1,21 @@
+假设共有0到n-1一共n个节点，dp[i]表示从i到终点所需要的最少步数
+在i节点到终点需要的最少步数是i的后续可达范围内的某个节点j的dp[j]
+dp[i] = min(dp[j])+1
+这里j的范围是从i+1到i+nums[i](最远可达范围),注意可能会越界，所以有个min(n-1,i+nums[i])+1，这里需要注意+1和-1（python从0索引，range不含右侧）
+
+class Solution:
+def jump(self, nums: List[int]) -> int:
+
+        n = len(nums)
+        dp = [n-1]*n
+        dp[n-1] = 0
+        for i in range(n-2,-1,-1):
+            #找到nums[i]对应的范围
+            for j in range(i+1,min(n-1,i+nums[i])+1):
+                dp[i] = min(dp[i],dp[j])
+            dp[i] = dp[i]+1
+    
+        return dp[0]
+
+但是貌似复杂度也很高....
+

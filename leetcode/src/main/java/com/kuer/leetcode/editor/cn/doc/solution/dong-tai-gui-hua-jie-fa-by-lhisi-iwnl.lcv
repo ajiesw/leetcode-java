@@ -1,0 +1,24 @@
+代码如下，核心代码注释
+
+int min(int a, int b)
+{
+return a < b ? a : b;
+}
+int jump(int* nums, int numsSize)
+{
+int dp[numsSize]; // 记录每个点能到达的最少步数
+memset(dp, 0, sizeof(dp));
+
+    for (int i = 0; i < numsSize; i++) {
+        for (int j = i + 1; j <= min(i + nums[i], numsSize - 1); j++) {
+            if (dp[j] == 0) {
+                dp[j] = dp[i] + 1; // 该点没有到达过
+            } else {
+                dp[j] = min(dp[j], dp[i] + 1); // 该点已到达过，比较哪一种步数少
+            }
+        }
+    }
+    
+    return dp[numsSize - 1];
+
+}

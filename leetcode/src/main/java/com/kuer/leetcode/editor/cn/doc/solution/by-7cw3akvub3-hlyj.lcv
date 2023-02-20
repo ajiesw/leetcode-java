@@ -1,0 +1,26 @@
+思路：
+当前遍历到的地方一定是已经是当前位置最优的，然后当前能包含的范围[l, R]和与当前位置同最优的右端点[l, r]范围进行比较，如果R>r，则去更新[r+1, R]这段区间，然后用差分前缀和维护一下，注意细节pre要开到n+1，然后两个取min的地方
+时间复杂度：O(n)
+
+* 
+
+```
+class Solution {
+public:
+    int jump(vector<int>& a) {
+        int n = (int)a.size();
+        vector<int>pre(n + 1);
+        for(int l = 0, r = 0; l < n; ++l) {
+            if(l) pre[l] += pre[l - 1];
+            int R = a[l] + l;
+            if(R > r) {
+                pre[min(n, r + 1)] += pre[l] + 1;
+                pre[min(n, R + 1)] -= pre[l] + 1;
+                r = R;
+            }
+        }
+        return pre[n - 1];
+    }
+};
+```
+
