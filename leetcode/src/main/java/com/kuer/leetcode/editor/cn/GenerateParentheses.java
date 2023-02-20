@@ -38,13 +38,14 @@ import java.util.List;
 public class GenerateParentheses{
   public static void main(String[] args) {
     Solution solution = new GenerateParentheses().new Solution();
-      System.out.println(solution.generateParenthesis(4));
+      System.out.println(solution.generateParenthesis(3));
   }
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public List<String> generateParenthesis(int n) {
-        return method1(n);
+        return method2(n);
     }
+
 
     private List<String> method1(int n) {
         List<String> ans = new ArrayList<>();
@@ -66,6 +67,28 @@ class Solution {
             generate(ans, str + "(", more + 1, length);
             generate(ans, str + ")", more - 1, length);
         }
+    }
+
+    private List<String> method2(int n){
+        List<String>[] pList = new List[n + 1];
+        pList[0] = new ArrayList<String>(){{add("");}};
+        pList[1] = new ArrayList<String>(){{add("()");}};
+        // 获取第二层到第n层的括号
+        for (int i = 2; i <= n; i++) {
+            // 括号从由n = p + q + 1组成
+            List<String> pTemp = new ArrayList<>();
+            for (int q = 0; q < i; q++) {
+                List<String> qs = pList[q];
+                List<String> ps = pList[i - 1 - q];
+                qs.forEach(e -> {
+                    ps.forEach(f -> {
+                        pTemp.add("(" + e + ")" + f);
+                    });
+                });
+            }
+            pList[i] = pTemp;
+        }
+        return pList[n];
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
