@@ -49,15 +49,14 @@ public class JumpGameIi {
     public static void main(String[] args) {
         Solution solution = new JumpGameIi().new Solution();
         System.out.println(solution.jump(new int[]{1,1,1,1}));
-//        System.out.println(solution.jump(new int[]{2,3,1,1,4}));
-//        System.out.println(solution.jump(new int[]{7,0,9,6,9,6,1,7,9,0,1,2,9,0,3}));
+        System.out.println(solution.jump(new int[]{2,3,1,1,4}));
+        System.out.println(solution.jump(new int[]{7,0,9,6,9,6,1,7,9,0,1,2,9,0,3}));
     }
 
     //leetcode submit region begin(Prohibit modification and deletion)
     class Solution {
         public int jump(int[] nums) {
-            return dp(nums);
-
+            return greedy(nums);
         }
 
         private int greedy(int[] nums) {
@@ -102,7 +101,7 @@ public class JumpGameIi {
                     if (i == 0){
                         break;
                     }
-                    lastIndex = maxJump[i];
+                    lastIndex = i;
                     i = 0;
                 }else {
                     i++;

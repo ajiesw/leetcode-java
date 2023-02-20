@@ -1,0 +1,74 @@
+**1、思路**
+
+构建1维dp数组，**dp[i]含义：从 0处到达i处的最少步数**
+
+用max_cur、max_pre记录：当前能到达最远位置，上一次能到达最远位置
+
+$$if \space i+nums[i]>max\_cur,\space \begin{cases}
+max\_pre = max\_cur\\
+max\_cur = i+nums[i]\\
+dp[j]=dp[i]+1, \space \space max\_pre<j<=max\_cur\\
+
+\end{cases}$$
+
+在更新dp[j]时，若 j  = n-1，返回dp[j]即可
+
+> 细节：n=1时，直接返回0
+
+---
+
+**2、举例说明**
+
+以 [4、0、4、3、4、1、1、1、3] 为例：
+
+初始化dp、max_pre、max_cur：
+<img src = https://pic.leetcode.cn/1671274912-IYVWkd-image.png>
+
+i = 0时，0+4>max_cur = 0，更新max_pre = max_cur=0, max_cur = 0+4=4，
+
+然后更新(max_pre，max_cur]内dp值为dp[0]+1，结果如下图：
+
+> （❗注意：此处一定是更新一个区间内的dp值，而非仅max_cur处的，比如(max_pre，max_cur]内有一个非常大的nums，从它一定可以跳到n-1处，那么该处的dp值为初值1001就不合理）
+
+<img src="https://pic.leetcode.cn/1671275425-bAuLHC-image.png"> </img>
+
+i = 1时，不更新dp值
+
+i = 2时，2+4>max_cur = 4，更新max_pre = 4, max_cur = 6
+
+然后更新(max_pre，max_cur]内dp值为dp[2]+1：
+
+> 注意更新区间不是 (i，max_cur]
+
+<img src="https://pic.leetcode.cn/1671275489-RvhJOU-image.png"> </img>
+
+i = 4时，同理，会更新 (6，8]内dp值，更新期间遇到 j = n-1=8时，返回dp[j]的值即可（将此处nums[4]改为>4的数同样适用）
+
+**3、代码**
+
+* 
+
+```
+class Solution {
+public:
+    int jump(vector<int>& nums) {
+        int n = nums.size();
+        if(n == 1) return 0;
+        vector<int> dp(n, 1001);    
+        dp[0] = 0;
+        int max_cur = 0, max_pre = 0;
+        for(int i=0; i<n; i++){
+            if(i+nums[i] > max_cur){
+                max_pre = max_cur;
+                max_cur = i+nums[i];
+                for(int j=max_pre+1; j<=max_cur; j++){
+                    dp[j] =dp[i]+1;
+                    if(j == n-1) return dp[j];
+                }
+            }
+        }
+        return dp[n-1];
+    }
+};
+```
+
