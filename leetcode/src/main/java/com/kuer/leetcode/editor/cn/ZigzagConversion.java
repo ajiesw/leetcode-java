@@ -78,13 +78,11 @@ public class ZigzagConversion {
             int commendInterval = 2 * (numRows - 1);
             StringBuilder sb = new StringBuilder();
             for (int i = 0; i < numRows; i++) {
-                int privateInterval = 2 * (numRows - i - 1);
+                // 交换间隔不能为空，如果为空会取下标两次
+                int privateInterval = 2 * (numRows - i - 1) == 0 ? commendInterval - 2 * (numRows - i - 1) : 2 * (numRows - i - 1 );
                 for (int j = i; j < s.length(); ) {
                     rowIndex[sb.length()] = j;
                     sb.append(s.charAt(rowIndex[sb.length()]));
-                    if (privateInterval == 0){
-                        privateInterval = commendInterval - privateInterval;
-                    }
                     j = rowIndex[sb.length() - 1] + privateInterval;
                     // 交换间隔
                     if (0 <= privateInterval && privateInterval < commendInterval) {
