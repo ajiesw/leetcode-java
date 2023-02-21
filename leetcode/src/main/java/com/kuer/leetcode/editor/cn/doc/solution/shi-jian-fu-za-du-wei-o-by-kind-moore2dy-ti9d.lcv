@@ -1,0 +1,29 @@
+![image.png](https://pic.leetcode.cn/1674829501-UhWDXO-image.png)
+
+# 解题思路
+
+遍历一遍数组，定义一个sum记录和，当我们此时的sum值小于0时，我们如果再往后元素只会让sum越来越小，所以我们此时应该使sum为0，如何开始从该位置开始重新计数，遍历完成之后就可以找到最大的子数组和。
+
+# 代码实现
+
+* 
+
+```
+class Solution {
+public:
+    int maxSubArray(vector<int>& nums) {
+        int sum = 0, now = 0, result = INT_MIN;
+        while (now < nums.size()) {
+            if (sum >= 0) {
+                sum += nums[now];
+                result = max(result, sum);
+                ++now;
+            } else {
+                sum = 0;
+            }
+        }
+        return result;
+    }
+};
+```
+
