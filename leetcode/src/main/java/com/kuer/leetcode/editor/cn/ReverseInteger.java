@@ -57,14 +57,21 @@ import java.util.concurrent.ArrayBlockingQueue;
 public class ReverseInteger {
     public static void main(String[] args) {
         Solution solution = new ReverseInteger().new Solution();
+        System.out.println(Integer.MIN_VALUE);
+        System.out.println(Integer.MAX_VALUE);
         System.out.println(solution.reverse(1563847412));
         System.out.println(solution.reverse(2147483647));
         System.out.println(solution.reverse(-2147483648));
+        System.out.println(solution.reverse(-2147483412));
     }
 
     //leetcode submit region begin(Prohibit modification and deletion)
     class Solution {
         public int reverse(int x) {
+            return optimizeMethod(x);
+        }
+
+        private int myMethod(int x) {
             boolean positive = x > 0;
             if (positive) {
                 x = -x;
@@ -87,6 +94,21 @@ public class ReverseInteger {
                 j *= 10;
             }
             return positive ? -result : result;
+        }
+
+        private int optimizeMethod(int x){
+            int res = 0;
+            // 判断位数是否取尽
+            while (x != 0){
+                // 获取个位数字
+                int i = x % 10;
+                if ((res > 214748364 || (res == 214748364 && x > 7)) || (res < -214748364 || (res == -214748364 && x < -8))){
+                    return 0;
+                }
+                res = res * 10 + i;
+                x /= 10;
+            }
+            return res;
         }
     }
 //leetcode submit region end(Prohibit modification and deletion)
