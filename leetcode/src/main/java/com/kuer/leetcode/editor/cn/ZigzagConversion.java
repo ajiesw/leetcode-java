@@ -63,7 +63,7 @@ package com.kuer.leetcode.editor.cn;
 public class ZigzagConversion {
     public static void main(String[] args) {
         Solution solution = new ZigzagConversion().new Solution();
-        String str = "A";
+        String str = "AB";
         int row = 1;
         System.out.println(solution.convert(str, row));
     }
@@ -71,6 +71,10 @@ public class ZigzagConversion {
     //leetcode submit region begin(Prohibit modification and deletion)
     class Solution {
         public String convert(String s, int numRows) {
+            return generate2(s, numRows);
+        }
+
+        private String generate(String s, int numRows) {
             if (numRows == 1){
                 return s;
             }
@@ -91,6 +95,42 @@ public class ZigzagConversion {
                 }
             }
             return sb.toString();
+        }
+
+        /**
+         *
+         * 直接根据题意构造字符串
+         *
+         * @description:
+         * @param s
+         * @param numRows
+         * @return: java.lang.String
+         * @author: wangkj6
+         * @time: 2023/2/22 11:07
+         */
+        private String generate2(String s, int numRows){
+            if (s.length() <= numRows || numRows < 2){
+                return s;
+            }
+            String[] stringArray = new String[numRows];
+            int row = 0;
+            boolean add = false;
+            for (int i = 0; i < s.length(); i++) {
+                if (row == 0 || row == numRows - 1){
+                    add = !add;
+                }
+                if (stringArray[row] == null){
+                    stringArray[row] = "" + s.charAt(i);
+                }else {
+                    stringArray[row] += s.charAt(i);
+                }
+                row = add ? row + 1 : row - 1;
+            }
+            StringBuilder res = new StringBuilder(new String());
+            for (String s1 : stringArray) {
+                res.append(s1);
+            }
+            return res.toString();
         }
     }
 //leetcode submit region end(Prohibit modification and deletion)
