@@ -1,0 +1,32 @@
+### 解题思路
+
+此处撰写解题思路
+执行用时：3 ms , 在所有 Java 提交中击败了98.12% 的用户
+内存消耗：40.8 MB, 在所有 Java 提交中击败了91.67% 的用户
+通过测试用例：3999 / 3999
+
+### 代码
+
+* java
+
+```java
+class Solution {
+    public String intToRoman(int num) {
+        int[] nums = {1000,900,500,400,100,90,50,40,10,9,5,4,1};
+        String[] strs = {"M","CM","D","CD","C","XC","L","XL","X","IX","V","IV","I"};
+        int i = 0,n = nums.length;
+        StringBuilder sb = new StringBuilder();
+        while(i < n){
+            if(num >= nums[i]){
+                sb.append(strs[i]);
+                num = num -nums[i];
+            }
+            if(num < nums[i])    i++;
+        }                             
+        return sb.toString();  
+    }
+
+
+}
+```
+
