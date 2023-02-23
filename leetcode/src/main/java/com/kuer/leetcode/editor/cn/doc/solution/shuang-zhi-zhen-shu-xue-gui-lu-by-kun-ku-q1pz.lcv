@@ -1,0 +1,70 @@
+- 
+
+  # 1.很容易想到的一种解法：将左右指针排列组合，爆算，适合小数据范围内
+
+- 
+
+  # 2.但是如果数据量大，明显这种方法的时间复杂度和空间复杂度会成几何倍数的增长
+
+- 
+
+  # 3.这时我们就需要观察题目的数学规律（其实很多算法题的核心就是找到数学规律然后用代码将数学规律写出来）
+
+- 
+
+  # 4.因为有两个指针，所以两个指针一起动，我们是没有办法优化的，我们要想办法每次只让一个指针动。
+
+- 
+
+  # 5.这里的数学规律是，当我们确定了左右边界，计算出了面积S1之后，一定是矮的一边往内移动才可能得到更大的面积。
+
+  - 证明：我们令左边界的下标为left，右边界的下标为right。那现在长方形的面积（也就是雨水的体积）如下：
+  - S1 = (right - left) * Math.min(height[left], height[right])
+  - 
+  - 当我们向内移动边界时，(right-left)一定是会减小的；
+  - 此时我们想得到更大的体积，就要让后面的Math.min(height[left], height[right])，也就是矮的边变大，所以我们只能向内移动矮的一边
+  - 
+  - 证毕。
+- 
+
+  # 6.所以根据5的想法贴上我的java代码：
+
+- 
+
+  * 
+
+  ```
+   public int maxArea(int[] height) {
+        //容器的底部宽
+        int length = height.length;
+        //左右指针
+        int left = 0,right = length - 1;
+        //res储存最大的体积，square计算当前体积
+        int res = 0,square = 0;
+        //进行循环，当左右指针相遇结束
+        while(left < right){
+            //右边界矮一点
+            if(height[left] > height[right]) {
+                square = height[right] * (right - left);
+                right--;
+            }
+            //左边界矮一点
+            else {
+                square = height[left] * (right - left);
+                left++;
+            }
+            //更新最大体积
+            res = Math.max(res,square);
+        }
+        return res;
+    }
+  
+  ```
+
+---
+
+- 
+
+  # 7.时间和空间消费如下
+
+![image.png](https://pic.leetcode.cn/1676960453-NSUlCt-image.png)

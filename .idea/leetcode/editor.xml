@@ -25,6 +25,17 @@
             </LeetcodeEditor>
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/leetcode/src/main/java/com/kuer/leetcode/editor/cn/ContainerWithMostWater.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="contentPath" value="$PROJECT_DIR$/leetcode/src/main/java/com/kuer/leetcode/editor/cn/doc/content/ContainerWithMostWater.md" />
+              <option name="frontendQuestionId" value="leetcode.cn11" />
+              <option name="host" value="leetcode.cn" />
+              <option name="path" value="$PROJECT_DIR$/leetcode/src/main/java/com/kuer/leetcode/editor/cn/ContainerWithMostWater.java" />
+              <option name="titleSlug" value="container-with-most-water" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/leetcode/src/main/java/com/kuer/leetcode/editor/cn/GenerateParentheses.java">
           <value>
             <LeetcodeEditor>
@@ -33,6 +44,17 @@
               <option name="host" value="leetcode.cn" />
               <option name="path" value="$PROJECT_DIR$/leetcode/src/main/java/com/kuer/leetcode/editor/cn/GenerateParentheses.java" />
               <option name="titleSlug" value="generate-parentheses" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/leetcode/src/main/java/com/kuer/leetcode/editor/cn/IntegerToRoman.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="contentPath" value="$PROJECT_DIR$/leetcode/src/main/java/com/kuer/leetcode/editor/cn/doc/content/IntegerToRoman.md" />
+              <option name="frontendQuestionId" value="leetcode.cn12" />
+              <option name="host" value="leetcode.cn" />
+              <option name="path" value="$PROJECT_DIR$/leetcode/src/main/java/com/kuer/leetcode/editor/cn/IntegerToRoman.java" />
+              <option name="titleSlug" value="integer-to-roman" />
             </LeetcodeEditor>
           </value>
         </entry>
@@ -143,6 +165,17 @@
               <option name="host" value="leetcode.cn" />
               <option name="path" value="$PROJECT_DIR$/leetcode/src/main/java/com/kuer/leetcode/editor/cn/ReverseInteger.java" />
               <option name="titleSlug" value="reverse-integer" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/leetcode/src/main/java/com/kuer/leetcode/editor/cn/RomanToInteger.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="contentPath" value="$PROJECT_DIR$/leetcode/src/main/java/com/kuer/leetcode/editor/cn/doc/content/RomanToInteger.md" />
+              <option name="frontendQuestionId" value="leetcode.cn13" />
+              <option name="host" value="leetcode.cn" />
+              <option name="path" value="$PROJECT_DIR$/leetcode/src/main/java/com/kuer/leetcode/editor/cn/RomanToInteger.java" />
+              <option name="titleSlug" value="roman-to-integer" />
             </LeetcodeEditor>
           </value>
         </entry>

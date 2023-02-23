@@ -43,24 +43,42 @@
 //
 // 进阶：你能不将整数转为字符串来解决这个问题吗？ 
 //
-// Related Topics 数学 👍 2420 👎 0
+// Related Topics 数学 👍 2421 👎 0
 
 package com.kuer.leetcode.editor.cn;
+
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @author kuer
- * 2023-02-22 23:10:16
+ * 2023-02-23 14:55:48
  */
-public class PalindromeNumber{
+public class PalindromeNumber {
     public static void main(String[] args) {
         Solution solution = new PalindromeNumber().new Solution();
+        System.out.println(solution.isPalindrome(0));
     }
-    //leetcode submit region begin(Prohibit modification and deletion)
-class Solution {
 
-    public boolean isPalindrome(int x) {
-        return false;
+    //leetcode submit region begin(Prohibit modification and deletion)
+    class Solution {
+        public boolean isPalindrome(int x) {
+            if (x < 0) {
+                return false;
+            }
+            List<Integer> list = new ArrayList<>();
+            while (x != 0) {
+                list.add(x % 10);
+                x /= 10;
+            }
+            for (int i = 0; i < list.size() / 2; i++) {
+                if (!list.get(i).equals(list.get(list.size() - i - 1))){
+                    return false;
+                }
+            }
+            return true;
+        }
     }
-}
 //leetcode submit region end(Prohibit modification and deletion)
 
 }
