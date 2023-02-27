@@ -63,9 +63,9 @@ public class ThreeSum {
     public static void main(String[] args) {
         Solution solution = new ThreeSum().new Solution();
         System.out.println(solution.threeSum(new int[]{-1, 0, 1, 2, -1, -4}));
-//        System.out.println(solution.threeSum(new int[]{0,1,1}));
-//        System.out.println(solution.threeSum(new int[]{0,0,0}));
-//        System.out.println(solution.threeSum(new int[]{-1,0,1,2,-1,-4}));
+        System.out.println(solution.threeSum(new int[]{0,1,1}));
+        System.out.println(solution.threeSum(new int[]{0,0,0}));
+        System.out.println(solution.threeSum(new int[]{-1,0,1,2,-1,-4}));
     }
 
     //leetcode submit region begin(Prohibit modification and deletion)
@@ -96,6 +96,12 @@ public class ThreeSum {
                             break;
                         }
                     }
+                    while (j < nums.length - 1 && nums[j] == nums[j + 1]){
+                        j++;
+                    }
+                }
+                while (i < nums.length - 2 && nums[i] == nums[i + 1]){
+                    i++;
                 }
             }
             return ans;
