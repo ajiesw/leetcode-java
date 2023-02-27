@@ -52,6 +52,7 @@
 package com.kuer.leetcode.editor.cn;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -62,6 +63,9 @@ public class ThreeSum {
     public static void main(String[] args) {
         Solution solution = new ThreeSum().new Solution();
         System.out.println(solution.threeSum(new int[]{-1, 0, 1, 2, -1, -4}));
+//        System.out.println(solution.threeSum(new int[]{0,1,1}));
+//        System.out.println(solution.threeSum(new int[]{0,0,0}));
+//        System.out.println(solution.threeSum(new int[]{-1,0,1,2,-1,-4}));
     }
 
     //leetcode submit region begin(Prohibit modification and deletion)
@@ -72,23 +76,26 @@ public class ThreeSum {
 
         private List<List<Integer>> myMethod(int[] nums) {
             List<List<Integer>> ans = new ArrayList<>();
-            if (nums == null || nums.length < 3) {
+            if (nums.length < 3) {
                 return ans;
             }
-            for (int right = nums.length - 1; right > 1; right--) {
-                int left = 0;
-                while (left + 1 < right) {
-                    int sum = nums[left] + nums[right];
-                    for (int i = left + 1; i < right; i++) {
-                        if (sum + nums[i] == 0) {
-                            List<Integer> list = new ArrayList<>();
-                            list.add(nums[left]);
+            Arrays.sort(nums);
+            for (int i = 0; i < nums.length - 2; i++) {
+                for (int j = i + 1; j < nums.length - 1; j++) {
+                    int target = -(nums[i] + nums[j]);
+                    for (int k = j + 1; k < nums.length; k++) {
+                        if (target < nums[k] || target > nums[nums.length - 1]){
+                            break;
+                        }
+                        if (target == nums[k]){
+                            ArrayList<Integer> list = new ArrayList<>();
                             list.add(nums[i]);
-                            list.add(nums[right]);
+                            list.add(nums[j]);
+                            list.add(nums[k]);
                             ans.add(list);
+                            break;
                         }
                     }
-                    left++;
                 }
             }
             return ans;
