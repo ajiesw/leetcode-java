@@ -36,6 +36,17 @@
             </LeetcodeEditor>
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/leetcode/src/main/java/com/kuer/leetcode/editor/cn/FourSum.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="contentPath" value="$PROJECT_DIR$/leetcode/src/main/java/com/kuer/leetcode/editor/cn/doc/content/FourSum.md" />
+              <option name="frontendQuestionId" value="leetcode.cn18" />
+              <option name="host" value="leetcode.cn" />
+              <option name="path" value="$PROJECT_DIR$/leetcode/src/main/java/com/kuer/leetcode/editor/cn/FourSum.java" />
+              <option name="titleSlug" value="4sum" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/leetcode/src/main/java/com/kuer/leetcode/editor/cn/GenerateParentheses.java">
           <value>
             <LeetcodeEditor>

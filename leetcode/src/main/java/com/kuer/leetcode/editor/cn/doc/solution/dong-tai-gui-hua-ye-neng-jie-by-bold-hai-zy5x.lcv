@@ -1,0 +1,51 @@
+# 解题思路
+
+动态规划 - 设字符串参数digits长度为n，第n个所有组合，是第n-1的所有组合 与 最后 第n个 数字对应的字符串（如 “jkl”）组合。
+
+不需要定义dp数组（节省内存），因为只与n-1的结果有关，与前面的n-2,n-3都无关。而只要定义 vector<string> vec_last; 记录“前n-1个所有数字”对应的字母组合。
+
+运行时间 4ms ,还可以。
+
+# 代码
+
+* cpp
+
+```cpp
+class Solution {
+public:
+    vector<string> letterCombinations(string digits) {
+        vector<string> vec_nums{"","","abc","def","ghi","jkl","mno","pqrs","tuv","wxyz"};
+        vector<string> vec_ret;
+        int len = digits.length();
+        if(len<=0){
+            return vec_ret;
+        }
+
+        vector<string> vec_last; //save the n-1 digits combinations 
+        //dp initial
+        for(int i=0, c = vec_nums[digits[0]-'0'].length();i<c;i++){
+            vec_last.push_back(string(1,vec_nums[digits[0]-'0'][i]));
+            vec_ret=vec_last;
+        }
+        
+        //calculate dp
+        for(int i=1;i<len;i++){  //dp[1]----dp[n]
+            vec_ret.clear();
+            string lastPerEleStr;
+            string chars=vec_nums[digits[i]-'0'];
+            for(int j=0;j<vec_last.size();j++){ 
+                lastPerEleStr = vec_last[j];
+                for(int t =0;t<chars.length();t++){
+                    /////////lastPerEleStr.push_back(chars[t]);
+                    vec_ret.push_back(lastPerEleStr+chars[t]);
+                }
+            }
+            vec_last=vec_ret;
+        }
+
+        return vec_ret;
+    }
+};
+
+```
+

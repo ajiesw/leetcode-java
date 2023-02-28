@@ -1,0 +1,80 @@
+### 解题思路
+
+类似于多位数，只是权重是后面字母出现次数的乘积，而非二进制的2或者十进制的10
+
+一共有每个数字对应字母个数乘积种组合
+第1位每个字母出现 第2位~第n位 字母个数乘积次，然后换下一个字母。
+第2位每个字母出现 第3位~第n位 字母个数乘积次，然后换下一个字母。
+依次类推
+最后一位，每次换一个字母
+
+例 234，2对应a,b,c;3对应 d,e,f;4对应g,h,i
+一共有3*3*3种组合
+第一位的2，对应的每个字母应该出现9次（d,e,f 的数量 * g,h,i 的数量），即a出现9次换成b,b出现9次换成c~~
+第二位的3，对应的每个字母应该出现3次（g,h,i的数量），即d出现3次换成e，e出现3次换成f，f出现3次再换回d~~
+第三位的4，因是最后一位，每次轮换字母，即g一次h一次i一次g一次h一次i一次~~
+
+### 代码
+
+* java
+
+```java
+class Solution {
+    public List<String> letterCombinations(String digits) {
+		if ("".equals(digits)) {
+			return Collections.emptyList();
+		}
+
+		char[][] arr = new char[digits.length()][0];
+		int[] idxMax = new int[digits.length()];
+		int[] idx = new int[digits.length()];
+		int[] cnt = new int[digits.length()];
+		int len = digits.length();
+		for (int i = len - 1; i >= 0; i--) {
+			int num = digits.charAt(i) - '0';
+			arr[i] = getMap().get(num);
+			idxMax[i] = arr[i].length - 1;
+			if (i == len - 1) {
+				cnt[i] = 1;
+			} else {
+				cnt[i] = cnt[i + 1] * arr[i + 1].length;
+			}
+		}
+		List<String> result = new ArrayList<>();
+		int total = cnt[0] * arr[0].length;
+		for (int i = 1; i <= total; i++) {
+			char[] tmp = new char[len];
+			for (int j = 0; j < len; j++) {
+				tmp[j] = arr[j][idx[j]];
+				if (i % cnt[j] == 0) {
+					setNextIdx(idx, idxMax, j);
+				}
+			}
+			result.add(String.valueOf(tmp));
+		}
+
+		return result;
+	}
+
+	private void setNextIdx(int[] idx, int[] idxMax, int j) {
+		idx[j]++;
+		if (idx[j] > idxMax[j]) {
+			idx[j] = 0;
+		}
+	}
+
+	private HashMap<Integer, char[]> getMap() {
+		HashMap<Integer, char[]> map = new HashMap<>();
+		map.put(2, new char[] { 'a', 'b', 'c' });
+		map.put(3, new char[] { 'd', 'e', 'f' });
+		map.put(4, new char[] { 'g', 'h', 'i' });
+		map.put(5, new char[] { 'j', 'k', 'l' });
+		map.put(6, new char[] { 'm', 'n', 'o' });
+		map.put(7, new char[] { 'p', 'q', 'r', 's' });
+		map.put(8, new char[] { 't', 'u', 'v' });
+		map.put(9, new char[] { 'w', 'x', 'y', 'z' });
+		return map;
+	}
+}
+```
+

@@ -1,0 +1,58 @@
+* cpp
+
+```cpp
+class Solution {
+    std::unordered_map<char, std::string> hashMap{
+            {'2', {"abc"}},
+            {'3', {"def"}},
+            {'4', {"ghi"}},
+            {'5', {"jkl"}},
+            {'6', {"mno"}},
+            {'7', {"pqrs"}},
+            {'8', {"tuv"}},
+            {'9', {"wxyz"}},
+    };
+
+    int cnt = 0;
+
+    void letterCombinations(int order, std::vector<std::string> &ans, std::string &digits) {
+        if (order == digits.size()) {
+            cnt++;
+            return;
+        }
+
+        ans[cnt] += hashMap[digits[order]][0];
+        letterCombinations(order + 1, ans, digits);
+        
+        ans[cnt] +=ans[cnt-1].substr(0,order);
+        ans[cnt] += hashMap[digits[order]][1];
+        letterCombinations(order + 1, ans, digits);
+
+        ans[cnt] +=ans[cnt-1].substr(0,order);
+        ans[cnt] += hashMap[digits[order]][2];
+        letterCombinations(order + 1, ans, digits);
+
+        if (digits[order] == '9' || digits[order] == '7') {
+            ans[cnt] +=ans[cnt-1].substr(0,order);
+            ans[cnt] += hashMap[digits[order]][3];
+            letterCombinations(order + 1, ans, digits);
+        }
+    }
+public:
+    std::vector<std::string> letterCombinations(std::string digits) {
+        if(digits.empty()) return {};
+
+        int size = 1;
+
+        for(char digit : digits){
+            if(digit == '9' || digit == '7') size*=4;
+            else size*=3;
+        }
+
+        std::vector<std::string> ans(size);
+        letterCombinations(0, ans, digits);
+        return ans;
+    }
+};
+```
+

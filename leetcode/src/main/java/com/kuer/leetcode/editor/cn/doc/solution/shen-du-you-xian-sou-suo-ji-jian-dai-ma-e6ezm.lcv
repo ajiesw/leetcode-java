@@ -1,0 +1,39 @@
+* cpp
+
+```cpp
+class Solution {
+    std::vector<std::string> ans;
+
+    std::unordered_map<char, std::string> hashMap{
+            {'2', {"abc"}},
+            {'3', {"def"}},
+            {'4', {"ghi"}},
+            {'5', {"jkl"}},
+            {'6', {"mno"}},
+            {'7', {"pqrs"}},
+            {'8', {"tuv"}},
+            {'9', {"wxyz"}},
+    };
+
+public:
+    std::vector<std::string> letterCombinations(const std::string &digits) {
+        if(digits.empty()) return ans;
+        
+        dfs({},0,digits);
+        
+        return ans;
+    }
+
+    void dfs(std::string result,int index,const std::string& digits){
+        if(index==digits.size()){
+            ans.push_back(result);
+            return;
+        }
+
+        for(auto ch:hashMap[digits[index]]){
+            dfs(result+ch,index+1,digits);
+        }
+    }
+};
+```
+
