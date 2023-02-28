@@ -63,15 +63,16 @@ public class ThreeSum {
     public static void main(String[] args) {
         Solution solution = new ThreeSum().new Solution();
         System.out.println(solution.threeSum(new int[]{-1, 0, 1, 2, -1, -4}));
-//        System.out.println(solution.threeSum(new int[]{0,1,1}));
-//        System.out.println(solution.threeSum(new int[]{0,0,0}));
-//        System.out.println(solution.threeSum(new int[]{-1,0,1,2,-1,-4}));
+        System.out.println(solution.threeSum(new int[]{0,1,1}));
+        System.out.println(solution.threeSum(new int[]{0,0,0}));
+        System.out.println(solution.threeSum(new int[]{0,0,0,0}));
+        System.out.println(solution.threeSum(new int[]{-1,0,1,2,-1,-4}));
     }
 
     //leetcode submit region begin(Prohibit modification and deletion)
     class Solution {
         public List<List<Integer>> threeSum(int[] nums) {
-            return myMethod(nums);
+            return leetCode(nums);
         }
 
         private List<List<Integer>> myMethod(int[] nums) {
@@ -81,6 +82,9 @@ public class ThreeSum {
             }
             Arrays.sort(nums);
             for (int i = 0; i < nums.length - 2; i++) {
+                if (nums[i] > 0){
+                    break;
+                }
                 for (int j = i + 1; j < nums.length - 1; j++) {
                     int target = -(nums[i] + nums[j]);
                     for (int k = j + 1; k < nums.length; k++) {
@@ -96,6 +100,64 @@ public class ThreeSum {
                             break;
                         }
                     }
+                    while (j < nums.length - 1 && nums[j] == nums[j + 1]){
+                        j++;
+                    }
+                }
+                while (i < nums.length - 2 && nums[i] == nums[i + 1]){
+                    i++;
+                }
+            }
+            return ans;
+        }
+
+        private List<List<Integer>> leetCode(int[] nums){
+            List<List<Integer>> ans = new ArrayList<>();
+            if (nums.length < 3) {
+                return ans;
+            }
+            Arrays.sort(nums);
+            for (int i = 0; i < nums.length - 2; i++) {
+                if (nums[i] > 0){
+                    break;
+                }
+                int target = - nums[i];
+                int l = i + 1;
+                int r = nums.length - 1;
+                while (l < r){
+                    int ln = nums[l];
+                    int rn = nums[r];
+                    // 右指针向左移
+                    if (ln + rn > target){
+                        while (l < r && nums[r] == nums[r - 1]){
+                            r--;
+                        }
+                        r--;
+                    }else if (ln + rn < target){
+                        // 左指针向右移
+                        while (l < r && nums[l] == nums[l + 1]){
+                            l++;
+                        }
+                        l++;
+                    }else {
+                        // 和为0
+                        List<Integer> list = new ArrayList<>();
+                        list.add(nums[i]);
+                        list.add(nums[l]);
+                        list.add(nums[r]);
+                        ans.add(list);
+                        while (l < r && nums[l] == nums[l + 1]){
+                            l++;
+                        }
+                        l++;
+                        while (l < r && nums[r] == nums[r - 1]){
+                            r--;
+                        }
+                        r--;
+                    }
+                }
+                while (i < nums.length - 2 && nums[i] == nums[i + 1]){
+                    i++;
                 }
             }
             return ans;
