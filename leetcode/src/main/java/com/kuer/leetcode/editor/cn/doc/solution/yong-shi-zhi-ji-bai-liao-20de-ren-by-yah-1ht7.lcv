@@ -1,0 +1,52 @@
+## 一、最短双指针代码
+
+### 解题思路
+
+1. 原理与之前发的一个最短代码题解，异曲同工，但此答案是静心之后重写的。
+2. 先前写了一版莫名其妙的代码，又臭又长，竟分析不明白了。
+
+### 代码
+
+* java
+
+```java
+class Solution {
+    public int removeDuplicates(int[] nums) {
+        int l = 0;
+        for (int r : nums)
+            if (nums[l] != r)
+                nums[++l] = r;
+        return ++l;
+    }
+}
+```
+
+## 二、又臭又长的初版代码，看不懂了。
+
+### 解题思路
+
+1. 与之前做的某题异曲同工，双指针法。由于此次用到 r + 1，因此不得不放弃 for-each 写法，也可能是学艺不精。
+2. 易错点，一是 l 不能随便 +1 ，只有 r 出现改变时才执行；二是 r 要规定范围，否则溢出，尤其是 if 条件中 && 两侧有顺序，要分清先后。同时，在做题过程中，提交了很多次，出现了各种没注意到的地方，如 r 不能从 1 开始等。
+3. 由于多次用到 nums.length，故先算出 len，不知道能否节省用时。
+4. 找代码的缺陷，真的很难。对照着标准答案，枯坐半小时，脑子却一团浆糊，仿佛大脑神游天外，不专注。分析不出差在哪，甚至看不明白区别。
+
+### 代码
+
+* java
+
+```java
+class Solution {
+    public int removeDuplicates(int[] nums) {
+        int l = 0;
+        int len = nums.length;
+        for (int r = 0; r < len; r++) {
+            if (nums[l] != nums[r])
+                nums[l] = nums[r];
+            if (r < len - 1 && nums[r] != nums[r + 1])
+                l++;
+        }
+        return l + 1;
+    }
+}
+```
+
