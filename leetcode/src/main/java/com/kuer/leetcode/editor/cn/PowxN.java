@@ -38,20 +38,47 @@
 // Related Topics 递归 数学 👍 1126 👎 0
 
 package com.kuer.leetcode.editor.cn;
+
 /**
  * @author kuer
  * 2023-03-01 23:00:08
  */
-public class PowxN{
+public class PowxN {
     public static void main(String[] args) {
         Solution solution = new PowxN().new Solution();
+        System.out.println(solution.myPow(-1.0, 2147483647));
+        System.out.println(solution.myPow(2.0, -2147483648));
+        System.out.println(solution.myPow(2.0, 10));
+        System.out.println(solution.myPow(2.0, -2));
+        System.out.println(solution.myPow(2.1, 3));
     }
-    //leetcode submit region begin(Prohibit modification and deletion)
-class Solution {
-    public double myPow(double x, int n) {
 
+    //leetcode submit region begin(Prohibit modification and deletion)
+    class Solution {
+        public double myPow(double x, int n) {
+            double pow = 1.0;
+            if (n == 0){
+                return pow;
+            }
+            if (x == 1.0){
+                return 1.0;
+            }
+            if (x == -1.0){
+                return n % 2 == 0 ? -x : x;
+            }
+            if (n == Integer.MIN_VALUE){
+                return 0;
+            }
+            if (n < 0){
+                n = -n;
+                x = 1 / x;
+            }
+            for (int i = 0; i < n; i++) {
+                pow *= x;
+            }
+            return pow;
+        }
     }
-}
 //leetcode submit region end(Prohibit modification and deletion)
 
 }
