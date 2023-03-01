@@ -1,0 +1,11 @@
+    public static int strStr(String haystack, String needle) {
+        int length = needle.length();
+        for(int i=0;i<=haystack.length()-length;i++){
+            String substring = haystack.substring(i, length+i);
+            if(needle.equals(substring)){
+                return i;
+            }
+        }
+        return -1;
+    }
+
