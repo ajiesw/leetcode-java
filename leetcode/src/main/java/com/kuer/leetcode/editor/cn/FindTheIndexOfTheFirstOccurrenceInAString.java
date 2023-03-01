@@ -40,7 +40,8 @@ package com.kuer.leetcode.editor.cn;
 public class FindTheIndexOfTheFirstOccurrenceInAString {
     public static void main(String[] args) {
         Solution solution = new FindTheIndexOfTheFirstOccurrenceInAString().new Solution();
-        System.out.println(solution.strStr("", ""));
+        System.out.println(solution.strStr("mississippi", "issipi"));
+        System.out.println(solution.strStr("a", "a"));
     }
 
     //leetcode submit region begin(Prohibit modification and deletion)
@@ -48,19 +49,30 @@ public class FindTheIndexOfTheFirstOccurrenceInAString {
         public int strStr(String haystack, String needle) {
             // fun
 //            return haystack.indexOf(needle);
+            if (needle.length() > haystack.length()){
+                return -1;
+            }
             int l = 0;
             int length = needle.length();
-            for (int i = 0; i < haystack.length(); i++) {
+            for (int i = 0; i < haystack.length() - needle.length() + 1; i++) {
                 if (haystack.charAt(i) == needle.charAt(l)){
                     while (l < length) {
                         if (haystack.charAt(i + l) == needle.charAt(l)){
-
+                            l++;
+                        }else {
+                            l = 0;
+                            break;
                         }
                     }
+                    if (l == length){
+                        return i;
+                    }
+                    l = 0;
                 }else {
                     l = 0;
                 }
             }
+            return -1;
         }
     }
 //leetcode submit region end(Prohibit modification and deletion)
