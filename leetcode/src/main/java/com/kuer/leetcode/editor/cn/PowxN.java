@@ -46,16 +46,20 @@ package com.kuer.leetcode.editor.cn;
 public class PowxN {
     public static void main(String[] args) {
         Solution solution = new PowxN().new Solution();
-        System.out.println(solution.myPow(-1.0, 2147483647));
+        System.out.println(solution.myPow(-1.0, -2147483647));
         System.out.println(solution.myPow(2.0, -2147483648));
         System.out.println(solution.myPow(2.0, 10));
-        System.out.println(solution.myPow(2.0, -2));
-        System.out.println(solution.myPow(2.1, 3));
+        System.out.println(solution.myPow(2.1, -2));
+        System.out.println(solution.myPow(2, 3));
     }
 
     //leetcode submit region begin(Prohibit modification and deletion)
     class Solution {
         public double myPow(double x, int n) {
+            return leetCode(x, n);
+        }
+
+        private double myMethod(double x, int n) {
             double pow = 1.0;
             if (n == 0){
                 return pow;
@@ -78,7 +82,34 @@ public class PowxN {
             }
             return pow;
         }
+        private double leetCode(double x, int n){
+            if (x == 1.0){
+                return 1;
+            }
+            if (x == -1.0 && n == Integer.MIN_VALUE){
+                return 1;
+            }
+            if (n == Integer.MIN_VALUE){
+                return 0;
+            }
+            return n > 0 ? pow1(x, n) : pow1(1/x, -n);
+        }
+
+        private double pow1(double x, int n) {
+            double ans = 1.0;
+            int i = n;
+            while (i >= 1){
+                // 如果幂次不是2的倍数
+                if ((i & 0x1) == 0x1){
+                    ans *= x;
+                }
+                x *= x;
+                i >>= 1;
+            }
+            return ans;
+        }
     }
-//leetcode submit region end(Prohibit modification and deletion)
+
+    //leetcode submit region end(Prohibit modification and deletion)
 
 }
