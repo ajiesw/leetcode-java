@@ -36,6 +36,10 @@
 
 package com.kuer.leetcode.editor.cn;
 
+import java.sql.Array;
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @author kuer
  * 2023-03-01 21:24:08
@@ -59,14 +63,15 @@ public class DivideTwoIntegers {
 //        System.out.println(solution.divide(1004958205, -2137325331));
 //        System.out.println(solution.divide(2147483647, 3));
 //        System.out.println(solution.divide(-2147483648, 2));
-        System.out.println(solution.fastMultChange(Integer.MIN_VALUE + 1, Integer.MAX_VALUE/3, -1));
+//        System.out.println(solution.fastMultChange(Integer.MIN_VALUE + 1, Integer.MAX_VALUE/3, -1));
+        System.out.println(solution.leetCode2(-2147483648, 2));
     }
 
 
     //leetcode submit region begin(Prohibit modification and deletion)
     class Solution {
         public int divide(int dividend, int divisor) {
-            return leetCode(dividend, divisor);
+            return leetCode2(dividend, divisor);
 //            int count = divisor;
 //            int leftMove = 0;
 //            int addNum = 0;
@@ -205,6 +210,66 @@ public class DivideTwoIntegers {
                 b >>= 1;
             }
             return true;
+        }
+
+        /**
+         * 将除数的2^n n >= 1 倍数保存进入list
+         * 14 / 3
+         * 3        6       12
+         * 3*2^0    3*2^1   3*2^2
+         * 14 / 3 = 2^2       = 4
+         * 15 / 3 = 2^0 + 2^2 = 1 + 4
+         * @param dividend
+         * @param divisor
+         * @return
+         */
+        private int leetCode2(int dividend, int divisor){
+            int ans = 0;
+            if (dividend == 0){
+                return 0;
+            }
+            if (dividend == Integer.MIN_VALUE){
+                if (divisor == 1){
+                    return Integer.MIN_VALUE;
+                } else if (divisor == -1) {
+                    return Integer.MAX_VALUE;
+                }
+            }
+            if (divisor == Integer.MIN_VALUE){
+                return dividend == Integer.MIN_VALUE ? 1 : 0;
+            }
+            boolean positive = true;
+            if (dividend > 0){
+                positive = !positive;
+                dividend = -dividend;
+            }
+            if (divisor > 0){
+                positive = !positive;
+                divisor = -divisor;
+            }
+            List<Integer> nums = new ArrayList<>();
+            nums.add(divisor);
+            int index = 0;
+            while (dividend - nums.get(index) <= nums.get(index)){
+                // 需要判断是否越界
+                nums.add(nums.get(index) + nums.get(index));
+                index++;
+            }
+//            int sum = 0;
+            for (int i = nums.size() - 1; i >= 0; i--) {
+
+                if (nums.get(i) >= dividend){
+                    dividend -= nums.get(i);
+                    ans += 1 << i;
+                }
+                // 细节用sum += nums.get(i);会出现越界问题，尽量不要使用加法
+                // 比如当nums.get(i)为Integer.MIN_VALUE时再加任何负值都会越界，导致为真
+//                if (sum + nums.get(i) >= dividend){
+//                    sum += nums.get(i);
+//                    ans += 1 << i;
+//                }
+            }
+            return positive ? ans : -ans;
         }
     }
 //leetcode submit region end(Prohibit modification and deletion)
