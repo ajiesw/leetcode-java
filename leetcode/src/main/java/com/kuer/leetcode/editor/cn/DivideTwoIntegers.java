@@ -43,46 +43,128 @@ package com.kuer.leetcode.editor.cn;
 public class DivideTwoIntegers {
     public static void main(String[] args) {
         Solution solution = new DivideTwoIntegers().new Solution();
-        System.out.println(solution.divide(1038925803, -2147483648));
-        System.out.println(solution.divide(-3, -2147483648));
-        System.out.println(solution.divide(-2147483648, -3));
-        System.out.println(solution.divide(10, 3));
-        System.out.println(solution.divide(10, 5));
-        System.out.println(solution.divide(10, -3));
-        System.out.println(solution.divide(10, -5));
-        System.out.println(solution.divide(-10, 3));
-        System.out.println(solution.divide(-10, 5));
-        System.out.println(solution.divide(-10, -3));
-        System.out.println(solution.divide(-10, -5));
+//        System.out.println(solution.divide(10, 3));
+//        System.out.println(solution.divide(18, 3));
+//        System.out.println(solution.divide(1038925803, -2147483648));
+//        System.out.println(solution.divide(-3, -2147483648));
+//        System.out.println(solution.divide(-2147483648, -3));
+//        System.out.println(solution.divide(10, 3));
+//        System.out.println(solution.divide(10, 5));
+//        System.out.println(solution.divide(10, -3));
+//        System.out.println(solution.divide(10, -5));
+//        System.out.println(solution.divide(-10, 3));
+//        System.out.println(solution.divide(-10, 5));
+//        System.out.println(solution.divide(-10, -3));
+//        System.out.println(solution.divide(-10, -5));
+        System.out.println(solution.divide(1004958205, -2137325331));
+        System.out.println(solution.divide(2147483647, 3));
+        System.out.println(solution.divide(-2147483648, 2));
     }
+
 
     //leetcode submit region begin(Prohibit modification and deletion)
     class Solution {
         public int divide(int dividend, int divisor) {
-            int count = 0;
-            if (divisor == -1) {
-                if (dividend == Integer.MIN_VALUE) {
+            return leetCode(dividend, divisor);
+//            int count = divisor;
+//            int leftMove = 0;
+//            int addNum = 0;
+//            while (dividend >= divisor + (count << addNum)){
+//                leftMove++;
+//                if (divisor << leftMove < dividend){
+//                    addNum++;
+//                }
+//                divisor <<= 1;
+//            }
+//            return addNum > 0 ? (1 << leftMove) + (1 << addNum) : (1 << leftMove);
+        }
+
+        private int leetCode(int dividend, int divisor){
+            // 由题意得商只能落在零到被除数区间内，用二分法查找
+            // 为了避免越界将所有数都转换在负数内操作
+            int ans = 0;
+            if (dividend == 0){
+                return 0;
+            }
+            if (dividend == Integer.MIN_VALUE){
+                if (divisor == 1){
+                    return Integer.MIN_VALUE;
+                } else if (divisor == -1) {
                     return Integer.MAX_VALUE;
                 }
-                return -dividend;
             }
+            if (divisor == Integer.MIN_VALUE){
+                return dividend == Integer.MIN_VALUE ? 1 : 0;
+            }
+            boolean positive = true;
+            if (dividend > 0){
+                positive = !positive;
+                dividend = -dividend;
+            }
+            if (divisor > 0){
+                positive = !positive;
+                divisor = -divisor;
+            }
+            // l为0，当被除数为Integer.MIN_VALUE会出现溢出，
+            int l = 1;
+            int r = dividend == Integer.MIN_VALUE ? Integer.MAX_VALUE : -dividend;
+            while (l <= r){
+                int mid = l + ((r - l) >> 1);
+                // 除数乘mid为负 被除数也为负 如果乘积大于被除数说明目标在右侧
+                // a/b >= c a,b<0
+                // a <= bc
 
-            if (divisor == 1) {
-                return dividend;
-            }
-            boolean b = Math.abs(dividend - divisor) > Math.abs(dividend);
-            if ((dividend > 0 && divisor < 0) || (dividend < 0 && divisor > 0)) {
-                while ((dividend > 0 && dividend >= -divisor) || (dividend < 0 && dividend <= -divisor)) {
-                    dividend += divisor;
-                    count--;
-                }
-            } else {
-                while ((dividend > 0 && dividend >= divisor) || (dividend < 0 && dividend <= divisor)) {
-                    dividend -= divisor;
-                    count++;
+                // 这里处理有问题，如果divisor足够小 乘数在合适的区间内会导致负数乘正数结果为正
+                // (Integer.MIN_VALUE + 1) * (Integer.MAX_VALUE/3)
+                int mult = fastMult(divisor, mid);
+                if (mult >= dividend && mult < 0){
+                    ans = mid;
+                    if (mid == Integer.MAX_VALUE){
+                        break;
+                    }
+                    l = mid + 1;
+                }else {
+                    r = mid - 1;
                 }
             }
-            return count;
+            return positive ? ans : -ans;
+        }
+
+
+        /**
+         * 快速乘，不使用乘除法
+         * @param a
+         * @param b
+         * @return
+         */
+        private int fastMult(int a, int b){
+            int ans = 0;
+            if (a == 0 || b == 0){
+                return ans;
+            }
+            boolean positive = true;
+            if (a < 0){
+                positive = !positive;
+                a = -a;
+            }
+            if (b < 0){
+                positive = !positive;
+                b = -b;
+            }
+            if (b > a){
+                int temp = a;
+                a = b;
+                b = temp;
+            }
+            while (b >= 1){
+                // 如果
+                if ((b & 1) == 1){
+                    ans += a;
+                }
+                a = a << 1;
+                b >>= 1;
+            }
+            return positive ? ans : -ans;
         }
     }
 //leetcode submit region end(Prohibit modification and deletion)
