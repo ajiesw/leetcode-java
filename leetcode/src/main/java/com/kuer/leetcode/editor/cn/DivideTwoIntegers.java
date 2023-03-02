@@ -56,9 +56,10 @@ public class DivideTwoIntegers {
 //        System.out.println(solution.divide(-10, 5));
 //        System.out.println(solution.divide(-10, -3));
 //        System.out.println(solution.divide(-10, -5));
-        System.out.println(solution.divide(1004958205, -2137325331));
-        System.out.println(solution.divide(2147483647, 3));
-        System.out.println(solution.divide(-2147483648, 2));
+//        System.out.println(solution.divide(1004958205, -2137325331));
+//        System.out.println(solution.divide(2147483647, 3));
+//        System.out.println(solution.divide(-2147483648, 2));
+        System.out.println(solution.fastMultChange(Integer.MIN_VALUE + 1, Integer.MAX_VALUE/3, -1));
     }
 
 
@@ -117,7 +118,7 @@ public class DivideTwoIntegers {
                 // 这里处理有问题，如果divisor足够小 乘数在合适的区间内会导致负数乘正数结果为正
                 // (Integer.MIN_VALUE + 1) * (Integer.MAX_VALUE/3)
                 int mult = fastMult(divisor, mid);
-                if (mult >= dividend && mult < 0){
+                if (fastMultChange(divisor, mid, dividend)){
                     ans = mid;
                     if (mid == Integer.MAX_VALUE){
                         break;
@@ -133,6 +134,11 @@ public class DivideTwoIntegers {
 
         /**
          * 快速乘，不使用乘除法
+         * 3 * 5
+         * 3 + 3 + 3 + 3 + 3
+         * [(3 + 3) + (3 + 3)] + 3 可以分成两部分[(3 + 3) + (3 + 3)] 和 3，将第二部分累加起来为sum
+         * (6 + 6) + sum
+         * 12 + sum
          * @param a
          * @param b
          * @return
@@ -165,6 +171,40 @@ public class DivideTwoIntegers {
                 b >>= 1;
             }
             return positive ? ans : -ans;
+        }
+
+        /**
+         * 快速乘，变体
+         * 判断a * b >= c是否成立
+         * a c为负
+         * @param a
+         * @param b
+         * @return
+         */
+        private boolean fastMultChange(int a, int b, int c){
+            int ans = 0;
+            while (b >= 1){
+                // 如果
+                if ((b & 1) == 1){
+                    // 判断后半部分大于c
+                    // ans + a >= c
+
+                    if (ans < c - a){
+                        return false;
+                    }
+                    ans += a;
+                }
+                if (b != 1){
+                    // 判断前半部分是否大于c
+                    // a + a防止溢出改为 c - a
+                    if (a < c - a){
+                        return false;
+                    }
+                    a = a << 1;
+                }
+                b >>= 1;
+            }
+            return true;
         }
     }
 //leetcode submit region end(Prohibit modification and deletion)
