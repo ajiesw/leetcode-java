@@ -1,0 +1,37 @@
+* 
+
+```
+class Solution {
+    public void nextPermutation(int[] nums) {
+        int len = nums.length;
+        for(int i=len-1;i>=0;i--){
+            for(int j=len-1; j>i; j--){
+                if(nums[j] > nums[i]){
+                    swap(nums,i,j);//遍历数组找到第一组右边比左边大的元素，并且大元素尽量小；交换位置
+                    reverse(nums,i+1,len-1);//交换位置后右半部分区间数组必然是降序的，对交换位置后的右半部分区间进行翻转（升序）
+                    return;
+                }
+            }
+        }
+        reverse(nums,0,len-1);//如果是当前排列的倒序最大组合值 [3,2,1] 下一个是[1,2,3] 不进入上述遍历直接翻转即可
+    }
+    public void swap(int[] nums, int left, int right){
+        int temp = nums[left];
+        nums[left] = nums[right];
+        nums[right] = temp;
+    }
+    public void reverse(int[] nums, int left,int right){
+        while(left < right){
+            swap(nums,left,right);
+            left++;
+            right--;
+        }
+    }
+}
+```
+
+1. 双指针遍历：从后向前遍历数组，右边指针从end位置开始，左边指针从end-1开始分别移动，找到第一组end比end-1大的元素对
+2. 交换上述步骤1中找到的end和end-1指针处两者的元素位置，此时i+1到数组结尾len的区间[i+1,len]是降序排列的（可自行手动举例验证）
+3. 交换end和end-1的元素位置后，对[i+1,len]区间进行翻转，即可得到题目中排列的下一个排列区间
+4. 需要注意，如果排列是[3,2,1]最大的那个值时，不会进入循环遍历，此时直接翻转数组即可
+
