@@ -47,7 +47,7 @@ package com.kuer.leetcode.editor.cn;
 public class SearchInsertPosition {
     public static void main(String[] args) {
         Solution solution = new SearchInsertPosition().new Solution();
-        System.out.println(solution.searchInsert(new int[]{1,3,5,6}, 7));
+        System.out.println(solution.searchInsert(new int[]{1,1,1,1,3}, 2));
     }
 
     //leetcode submit region begin(Prohibit modification and deletion)
@@ -57,9 +57,11 @@ public class SearchInsertPosition {
             int r = nums.length - 1;
             while (l <= r){
                 int mid = (l + r) >> 1;
+                // mid小于target，在右侧或在右侧插入，下标加一处插入
                 if (nums[mid] < target){
                     l = mid + 1;
                 }else {
+                    // mid大于等于target，在左侧。如果要插入需要在等于时插入
                     r = mid - 1;
                 }
             }
