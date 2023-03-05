@@ -311,6 +311,17 @@
             </LeetcodeEditor>
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/leetcode/src/main/java/com/kuer/leetcode/editor/cn/SearchInsertPosition.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="contentPath" value="$PROJECT_DIR$/leetcode/src/main/java/com/kuer/leetcode/editor/cn/doc/content/SearchInsertPosition.md" />
+              <option name="frontendQuestionId" value="leetcode.cn35" />
+              <option name="host" value="leetcode.cn" />
+              <option name="path" value="$PROJECT_DIR$/leetcode/src/main/java/com/kuer/leetcode/editor/cn/SearchInsertPosition.java" />
+              <option name="titleSlug" value="search-insert-position" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/leetcode/src/main/java/com/kuer/leetcode/editor/cn/StringToIntegerAtoi.java">
           <value>
             <LeetcodeEditor>
