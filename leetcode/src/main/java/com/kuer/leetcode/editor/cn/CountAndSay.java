@@ -83,22 +83,16 @@ public class CountAndSay {
                 return "1";
             }
             String target = countAndSay(n - 1);
-            int count = 0;
-            char content = '_';
+            int count = 1;
             StringBuilder sb = new StringBuilder();
             for (int i = 0; i < target.length(); i++) {
-                char c = target.charAt(i);
-                if (content != c){
-                    if (count != 0){
-                        sb.append(count).append(content);
-                    }
-                    content = c;
+                if (i == target.length() - 1 || target.charAt(i + 1) != target.charAt(i)){
+                    sb.append(count).append(target.charAt(i));
                     count = 1;
                 }else {
                     count++;
                 }
             }
-            sb.append(count).append(content);
             return sb.toString();
         }
     }
