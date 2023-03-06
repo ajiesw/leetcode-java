@@ -55,6 +55,7 @@ public class CombinationSum {
     public static void main(String[] args) {
         Solution solution = new CombinationSum().new Solution();
 //        System.out.println(solution.combinationSum(new int[]{2, 3, 6, 7}, 7));
+        System.out.println(solution.combinationSum(new int[]{4,2,8}, 8));
         System.out.println(solution.combinationSum(new int[]{8, 7, 4, 3}, 11));
     }
 
@@ -70,8 +71,9 @@ public class CombinationSum {
 
         /**
          * 无法去重
-         * 添加起始循环值可以实现去重（只遍历大于等于当前值的）
-         *
+         * 排序需要时间看如何操作
+         * 如果进行排序（可以剪枝）添加起始循环值可以实现去重（只遍历大于等于当前值的）
+         * 如果不排序 直接全遍历 去重通过不遍历之前的元素实现
          * @param list
          * @param candidates
          * @param target
@@ -84,7 +86,6 @@ public class CombinationSum {
                     list.add(candidate);
                     ans.add(new ArrayList<>(list));
                     list.remove(list.size() - 1);
-                    break;
                 } else if (target > candidate) {
                     list.add(candidate);
                     myMethod1(list, candidates, target - candidate, ans, i);
