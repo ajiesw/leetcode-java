@@ -65,6 +65,9 @@
 
 package com.kuer.leetcode.editor.cn;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * @author kuer
  * 2023-03-05 23:07:28
@@ -72,13 +75,87 @@ package com.kuer.leetcode.editor.cn;
 public class ValidSudoku {
     public static void main(String[] args) {
         Solution solution = new ValidSudoku().new Solution();
+        char[][] board = {{'8', '3', '.', '.', '7', '.', '.', '.', '.'},
+                {'6', '.', '.', '1', '9', '5', '.', '.', '.'},
+                {'.', '9', '8', '.', '.', '.', '.', '6', '.'},
+                {'8', '.', '.', '.', '6', '.', '.', '.', '3'},
+                {'4', '.', '.', '8', '.', '3', '.', '.', '1'},
+                {'7', '.', '.', '.', '2', '.', '.', '.', '6'},
+                {'.', '6', '.', '.', '.', '.', '2', '8', '.'},
+                {'.', '.', '.', '4', '1', '9', '.', '.', '5'},
+                {'.', '.', '.', '.', '8', '.', '.', '7', '9'}};
+        System.out.println(solution.isValidSudoku(board));
     }
 
     //leetcode submit region begin(Prohibit modification and deletion)
     class Solution {
         public boolean isValidSudoku(char[][] board) {
-
+            Map<Integer, Map<Character, Character>> rowMap = new HashMap<>(16);
+            Map<Integer, Map<Character, Character>> columnMap = new HashMap<>(16);
+            // 00, 01, 02
+            // 10, 11, 12
+            // 20, 21, 22
+            Map<String, Map<Character, Character>> regionMap = new HashMap<>(16);
+            for (int rowIndex = 0; rowIndex < board.length; rowIndex++) {
+                char[] rowData = board[rowIndex];
+                Map<Character, Character> currentRow = getCurrentData(rowMap, rowIndex);
+                for (int columnIndex = 0; columnIndex < rowData.length; columnIndex++) {
+                    String regionIndex = rowIndex / 3 + String.valueOf(columnIndex / 3);
+                    Map<Character, Character> currentRegion = getCurrentData(regionMap, regionIndex);
+                    char data = rowData[columnIndex];
+                    Map<Character, Character> currentColumn = getCurrentData(columnMap, columnIndex);
+                    // 如果是空跳过
+                    if ('.' == data) {
+                        continue;
+                    }
+                    if (judgmentValidity(currentRow, data)) {
+                        return false;
+                    }
+                    if (judgmentValidity(currentColumn, data)) {
+                        return false;
+                    }
+                    if (judgmentValidity(currentRegion, data)) {
+                        return false;
+                    }
+                }
+            }
+            return true;
         }
+
+        /**
+         * 获取对应当前的数据
+         *
+         * @param regionMap
+         * @param regionIndex
+         * @return
+         */
+        private <T> Map<Character, Character> getCurrentData(Map<T, Map<Character, Character>> regionMap, T regionIndex) {
+            Map<Character, Character> currentRegion;
+            if (regionMap.containsKey(regionIndex)) {
+                currentRegion = regionMap.get(regionIndex);
+            } else {
+                currentRegion = new HashMap<>(16);
+                regionMap.put(regionIndex, currentRegion);
+            }
+            return currentRegion;
+        }
+
+        /**
+         * 判断是否合法
+         *
+         * @param currentRow
+         * @param data
+         * @return
+         */
+        private boolean judgmentValidity(Map<Character, Character> currentRow, char data) {
+            if (currentRow.containsKey(data)) {
+                return true;
+            } else {
+                currentRow.put(data, data);
+            }
+            return false;
+        }
+
     }
 //leetcode submit region end(Prohibit modification and deletion)
 
