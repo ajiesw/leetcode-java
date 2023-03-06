@@ -46,6 +46,7 @@
 package com.kuer.leetcode.editor.cn;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @author kuer
@@ -54,6 +55,7 @@ import java.util.*;
 public class CombinationSum {
     public static void main(String[] args) {
         Solution solution = new CombinationSum().new Solution();
+        System.out.println(solution.myMethodDp(new int[]{1, 2, 3, 4}, 8));
 //        System.out.println(solution.combinationSum(new int[]{2, 3, 6, 7}, 7));
         System.out.println(solution.combinationSum(new int[]{4,2,8}, 8));
         System.out.println(solution.combinationSum(new int[]{8, 7, 4, 3}, 11));
@@ -63,10 +65,11 @@ public class CombinationSum {
     class Solution {
         public List<List<Integer>> combinationSum(int[] candidates, int target) {
 //            Arrays.sort(candidates);
-            List<List<Integer>> ans = new ArrayList<>();
-            List<Integer> list = new ArrayList<>();
-            myMethod1(list, candidates, target, ans, 0);
-            return ans;
+//            List<List<Integer>> ans = new ArrayList<>();
+//            List<Integer> list = new ArrayList<>();
+//            myMethod1(list, candidates, target, ans, 0);
+//            return ans;
+            return myMethodDp(candidates, target);
         }
 
         /**
@@ -97,19 +100,42 @@ public class CombinationSum {
         /**
          * 使用动态规划
          *
-         * @param dp         dp用来存储和为i的种类
          * @param candidates
          * @param target
-         * @param ans
          */
-        private void myMethodDp(Map<Integer, List<List<Integer>>> dp, int[] candidates, int target, List<List<Integer>> ans) {
-            // dp中是否存在
-            if (!dp.containsKey(target)) {
-                for (int candidate : candidates) {
-                    int diff = target - candidate;
-
+        private List<List<Integer>> myMethodDp(int[] candidates, int target) {
+            Arrays.sort(candidates);
+            // 从1到target的数据
+            Set<List<Integer>>[] dp = new Set[target];
+            for (int i = 0; i < dp.length; i++) {
+                // 获得i + 1的组合
+                dp[i] = new HashSet<>();
+                for (int j = 0; j < candidates.length; j++) {
+                    int tempTarget = i + 1;
+                    if (candidates[j] <= tempTarget){
+                        if (candidates[j] == tempTarget){
+                            List<Integer> list = new ArrayList<>();
+                            list.add(candidates[j]);
+                            dp[i].add(list);
+                        }else {
+                            int find = tempTarget - candidates[j] - 1;
+                            if (!dp[find].isEmpty()){
+                                for (List<Integer> integers : dp[find]) {
+                                    List<Integer> e = new ArrayList<>(integers);
+                                    e.add(candidates[j]);
+                                    // 需要去重
+                                    // 方法一使用set，对set元素进行排序
+                                    e.sort(Comparator.comparingInt(a -> a));
+                                    dp[i].add(e);
+                                }
+                            }
+                        }
+                    }else {
+                        break;
+                    }
                 }
             }
+            return new ArrayList<>(dp[target - 1]);
         }
     }
 //leetcode submit region end(Prohibit modification and deletion)

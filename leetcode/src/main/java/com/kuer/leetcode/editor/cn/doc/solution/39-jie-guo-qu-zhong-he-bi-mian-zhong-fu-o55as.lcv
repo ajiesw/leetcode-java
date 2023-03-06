@@ -1,0 +1,99 @@
+### 解题思路1
+
+对于本题递归优化有两方面
+- 结果如何去重
+- - 关于结果的去重，可以通过排序后，每添加一个数字，后续添加的数字都小于等于当前数字
+- 避免重复的递归
+- - 暂时没有想到好的思路，貌似与第一个结果去重有些冲突
+
+### 代码
+
+* cpp
+
+```cpp
+class Solution {
+private:
+    vector<vector<int>> res;
+public:
+    vector<vector<int>> combinationSum(vector<int>& candidates, int target) {
+        sort(candidates.begin(), candidates.end());
+        vector<int> tmp;
+        dfs(candidates, tmp, target, (int)candidates.size()-1);
+        return res;
+        
+    }
+    void dfs(vector<int>& candidates, vector<int>& tmp, int target, int x){
+        if(target == 0) {
+            res.emplace_back(tmp);
+            return;
+        }
+        else if (target<0) return;
+        for(int i=x;i>=0;--i){
+            tmp.emplace_back(candidates[i]);
+            dfs(candidates, tmp, target-candidates[i], i);
+            tmp.pop_back();
+        }
+    }
+};
+
+```
+
+改为从前向后遍历，这样方便增加一个剪枝操作，当target小于当前值，停止遍历，因为后面的值都会大于当前值
+
+* cpp
+
+```cpp
+class Solution {
+private:
+    vector<vector<int>> res;
+public:
+    vector<vector<int>> combinationSum(vector<int>& candidates, int target) {
+        sort(candidates.begin(), candidates.end());
+        vector<int> tmp;
+        dfs(candidates, tmp, target, 0);
+        return res;
+        
+    }
+    void dfs(vector<int>& candidates, vector<int>& tmp, int target, int x){
+        if(target == 0) res.emplace_back(tmp);
+        else if (target<0) return;
+        for(int i=x;i<candidates.size() && target>=candidates[i];++i){
+            tmp.emplace_back(candidates[i]);
+            dfs(candidates, tmp, target-candidates[i], i);
+            tmp.pop_back();
+        }
+    }
+};
+```
+
+### 解题思路2
+
+动态规划与递归通常相伴，本题可以用动态规划解，但执行效率并不高
+
+* cpp
+
+```cpp
+class Solution {
+public:
+    vector<vector<int>> combinationSum(vector<int>& candidates, int target) {
+        vector<set<vector<int>>> dp(target+1);
+        dp[0].insert(vector<int>());
+        sort(candidates.begin(), candidates.end());
+        for(int i=1;i<=target;++i){
+            for(int j=0;j<candidates.size() && candidates[j]<=i;++j){
+                for(auto v: dp[i-candidates[j]]){
+                    v.emplace_back(candidates[j]);
+                    sort(v.begin(), v.end());
+                    if(!dp[i].count(v)) dp[i].insert(v);
+                }
+            }
+        }
+        vector<vector<int>> res;
+        for(auto& v: dp[target]) {
+            res.emplace_back(move(v));
+        }
+        return res;
+    }
+};
+```
+

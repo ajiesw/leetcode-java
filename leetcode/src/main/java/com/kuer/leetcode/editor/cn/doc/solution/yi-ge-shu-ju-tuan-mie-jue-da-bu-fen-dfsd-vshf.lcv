@@ -1,0 +1,13 @@
+如题。
+
+* 
+
+```
+[2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,32,34,36,38,40,42,44,46,48,50,52,54,56,58,60]
+499
+```
+
+测了题解区的若干高票，都没跑出来。历经千辛万苦终于从美服找到了一个能跑出来这个数据的 [代码](https://leetcode.com/problems/combination-sum/discuss/1012779/C%2B%2B-with-memo)，不过提交一下的话正常人 4ms，他 140ms。
+![image.png](https://pic.leetcode-cn.com/1662880715-CYLKVO-image.png)
+
+更新：数据范围现在被改成 $1\leq \mathrm{target}\leq 40$ 了。
