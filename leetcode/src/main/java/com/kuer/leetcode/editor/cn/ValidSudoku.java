@@ -90,6 +90,51 @@ public class ValidSudoku {
     //leetcode submit region begin(Prohibit modification and deletion)
     class Solution {
         public boolean isValidSudoku(char[][] board) {
+            return leetCode(board);
+        }
+
+        /**
+         * 使用数组代替HashMap
+         * @param board
+         * @return
+         */
+        private boolean leetCode(char[][] board){
+            // rowData[i]表示第i行数据
+            boolean[][] rowData = new boolean[9][9];
+            // columnData[i]表示第i列数据
+            boolean[][] columnData = new boolean[9][9];
+            // regionData[i][j]表示 i行j列九宫格
+            boolean[][][] regionData = new boolean[3][3][9];
+            for (int rowIndex = 0; rowIndex < board.length; rowIndex++) {
+                char[] currentRowData = board[rowIndex];
+                for (int columnIndex = 0; columnIndex < currentRowData.length; columnIndex++) {
+                    char currentData = currentRowData[columnIndex];
+                    if ('.' == currentData){
+                        continue;
+                    }
+                    if (rowData[rowIndex][currentData - '1']){
+                        return false;
+                    }else {
+                        rowData[rowIndex][currentData - '1'] = true;
+                    }
+
+                    if (columnData[columnIndex][currentData - '1']){
+                        return false;
+                    }else {
+                        columnData[columnIndex][currentData - '1'] = true;
+                    }
+
+                    if (regionData[rowIndex / 3][columnIndex / 3][currentData - '1']){
+                        return false;
+                    }else {
+                        regionData[rowIndex / 3][columnIndex / 3][currentData - '1'] = true;
+                    }
+                }
+            }
+            return true;
+        }
+
+        private boolean myMethod(char[][] board) {
             Map<Integer, Map<Character, Character>> rowMap = new HashMap<>(16);
             Map<Integer, Map<Character, Character>> columnMap = new HashMap<>(16);
             // 00, 01, 02
