@@ -1,0 +1,66 @@
+### 解题思路
+
+![image.png](https://pic.leetcode.cn/1675798996-MuAtBq-image.png)
+
+### 代码
+
+* cpp
+
+```cpp
+class Solution {
+public:
+    string addStrings(string num1, string num2) {
+        int n1 = num1.size();
+        int n2 = num2.size();
+        string res("");
+        int temp = 0;
+        int i , j;
+        for (i = n1 - 1, j = n2 - 1; i >= 0 && j >= 0; i--,j--) {
+            int key1 = num1[i] - '0';
+            int key2 = num2[j] - '0';
+            if (key1 + key2 + temp < 10) {
+                res += key1 + key2 + temp + '0';
+                temp = 0;
+                
+            } else {
+                res += (key1 + key2 + temp) % 10 + '0';
+                temp = (key1 + key2 + temp) / 10;
+            }
+        }
+        
+        while (i >= 0) {
+            if (temp + num1[i] - '0' < 10) {
+                res += num1[i--] + temp;
+                temp = 0;
+            } else {
+                 res += (num1[i] - '0' + temp) % 10 + '0';
+                 temp = (num1[i--] - '0' + temp) / 10;
+            }
+            
+        }
+        while (j >= 0) {
+            if (temp + num2[j] - '0' < 10) {
+                res += num2[j--] + temp;
+                temp = 0;
+            } else {
+                res += (num2[j] - '0' + temp) % 10 + '0';
+                 temp = (num2[j--] - '0' + temp) / 10;
+            }
+        }
+        if (temp != 0) {
+            res += temp + '0';
+        }
+        int n = res.size();
+        int left = 0, right = n - 1;
+        while (left < right) {
+            auto temp = res[left];
+            res[left] = res[right];
+            res[right] = temp;
+            left++;
+            right--;
+        }
+        return res;
+    }
+};
+```
+
