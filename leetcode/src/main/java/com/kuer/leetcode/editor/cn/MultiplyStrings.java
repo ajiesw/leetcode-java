@@ -30,7 +30,6 @@
 
 package com.kuer.leetcode.editor.cn;
 
-import java.net.Socket;
 import java.util.*;
 
 /**
@@ -40,6 +39,7 @@ import java.util.*;
 public class MultiplyStrings {
     public static void main(String[] args) {
         Solution solution = new MultiplyStrings().new Solution();
+//        System.out.println(solution.charMultiplyString('3', "456"));
         System.out.println(solution.multiply("123", "456"));
         System.out.println(solution.multiply("123456789", "987654321"));
     }
@@ -50,6 +50,19 @@ public class MultiplyStrings {
             if ("0".equals(num1) || "0".equals(num2)){
                 return "0";
             }
+            String ans = "";
+            for (int i = num1.length() - 1; i >= 0; i--) {
+                StringBuilder augend = charMultiplyString(num1.charAt(i), num2);
+                for (int j = 0; j < num1.length() - 1 - i; j++) {
+                    augend.append('0');
+                }
+                ans = stringAdd(ans, augend.toString());
+            }
+            return ans;
+//            return myStupidMethod(num1, num2);
+        }
+
+        private String myStupidMethod(String num1, String num2) {
             List<Queue<Character>> addList = new ArrayList<>();
             for (int i = num1.length() - 1; i >= 0; i--) {
                 char multiplier = num1.charAt(i);
@@ -104,6 +117,37 @@ public class MultiplyStrings {
             carry = carry == null ? '0' : carry;
             int add = augend + addend + carry - ('0' << 1) - '0';
             return new Character[]{(char) ('0' + add / 10), (char) ('0' + add % 10)};
+        }
+
+        private String stringAdd(String str1, String str2){
+            StringBuilder sb = new StringBuilder();
+            int carry = 0, i = str1.length() - 1, j = str2.length() - 1;
+            while (carry != 0 || i >= 0 || j >= 0){
+                if (i >= 0){
+                    carry += str1.charAt(i--) - '0';
+                }
+                if (j >= 0){
+                    carry += str2.charAt(j--) - '0';
+                }
+                sb.append(carry % 10);
+                carry /= 10;
+            }
+            return sb.reverse().toString();
+        }
+
+        private StringBuilder charMultiplyString(Character character, String str){
+            int multiplier = character - '0';
+            int carry = 0;
+            StringBuilder sb = new StringBuilder();
+            int i = str.length() - 1;
+            while (i >= 0 || carry != 0) {
+                if (i >= 0){
+                    carry += multiplier * (str.charAt(i--) - '0');
+                }
+                sb.append(carry % 10);
+                carry /= 10;
+            }
+            return sb.reverse();
         }
     }
 //leetcode submit region end(Prohibit modification and deletion)
