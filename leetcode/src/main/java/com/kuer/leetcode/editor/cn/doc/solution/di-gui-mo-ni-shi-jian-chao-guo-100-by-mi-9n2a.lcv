@@ -1,0 +1,36 @@
+第一次发题解
+主要思路：通过递归从1至n分别迭代求出他们的解，求解过程还是根据题意（这题目真的难理解，不用n=30去测试还真不知道题目什么意思）去模拟。
+直接看代码：
+
+* 
+
+```
+class Solution {
+public:
+    string countAndSay(int n) {
+        if(n==1)//当n==1时终止递归，再进行回溯迭代
+        {
+            return "1";
+        }
+        else
+        {
+            string s{};
+            string temp=countAndSay(n-1);//递归迭代
+            int n=temp.size();
+            int k=1;
+            for(int i=1;i<=n;i++)
+            {
+                if(i==n||temp[i]!=temp[i-1])//从节点和串尾求连续子串的长度
+                {
+                    s+=k+'0';
+                    s+=temp[i-1];
+                    k=0;
+                }
+                k++;
+            }
+            return s;
+        }
+    }
+};
+```
+
