@@ -30,7 +30,6 @@
 
 package com.kuer.leetcode.editor.cn;
 
-import java.net.Socket;
 import java.util.*;
 
 /**
@@ -40,16 +39,31 @@ import java.util.*;
 public class MultiplyStrings {
     public static void main(String[] args) {
         Solution solution = new MultiplyStrings().new Solution();
-        System.out.println(solution.multiply("123", "456"));
+//        System.out.println(solution.charMultiplyString('3', "456"));
+        System.out.println(solution.optimizeSecond("123", "456"));
         System.out.println(solution.multiply("123456789", "987654321"));
     }
 
     //leetcode submit region begin(Prohibit modification and deletion)
     class Solution {
         public String multiply(String num1, String num2) {
-            if ("0".equals(num1) || "0".equals(num2)){
-                return "0";
-            }
+//            if ("0".equals(num1) || "0".equals(num2)){
+//                return "0";
+//            }
+//            String ans = "";
+//            for (int i = num1.length() - 1; i >= 0; i--) {
+//                StringBuilder augend = charMultiplyString(num1.charAt(i), num2);
+//                for (int j = 0; j < num1.length() - 1 - i; j++) {
+//                    augend.append('0');
+//                }
+//                ans = stringAdd(ans, augend.toString());
+//            }
+//            return ans;
+            return optimizeSecond(num1, num2);
+//            return myStupidMethod(num1, num2);
+        }
+
+        private String myStupidMethod(String num1, String num2) {
             List<Queue<Character>> addList = new ArrayList<>();
             for (int i = num1.length() - 1; i >= 0; i--) {
                 char multiplier = num1.charAt(i);
@@ -104,6 +118,74 @@ public class MultiplyStrings {
             carry = carry == null ? '0' : carry;
             int add = augend + addend + carry - ('0' << 1) - '0';
             return new Character[]{(char) ('0' + add / 10), (char) ('0' + add % 10)};
+        }
+
+        private String stringAdd(String str1, String str2){
+            StringBuilder sb = new StringBuilder();
+            int carry = 0, i = str1.length() - 1, j = str2.length() - 1;
+            while (carry != 0 || i >= 0 || j >= 0){
+                if (i >= 0){
+                    carry += str1.charAt(i--) - '0';
+                }
+                if (j >= 0){
+                    carry += str2.charAt(j--) - '0';
+                }
+                sb.append(carry % 10);
+                carry /= 10;
+            }
+            return sb.reverse().toString();
+        }
+
+        private StringBuilder charMultiplyString(Character character, String str){
+            int multiplier = character - '0';
+            int carry = 0;
+            StringBuilder sb = new StringBuilder();
+            int i = str.length() - 1;
+            while (i >= 0 || carry != 0) {
+                if (i >= 0){
+                    carry += multiplier * (str.charAt(i--) - '0');
+                }
+                sb.append(carry % 10);
+                carry /= 10;
+            }
+            return sb.reverse();
+        }
+
+        /**
+         * 根据leetcode第二次优化
+         * 将乘法和加法一起计算
+         * 而不是先计算一位的乘法后加之前的和
+         * @param str1
+         * @param str2
+         * @return
+         */
+        private String optimizeSecond(String str1, String str2){
+            if ("0".equals(str1) || "0".equals(str2)){
+                return "0";
+            }
+            // 两数相乘最大位数为两个位数之和
+            int[] ansArray = new int[str1.length() + str2.length()];
+            // 从右向左计算每一位的和
+            // 存储在ansArray中，每个元素存储一位数据
+            // 每个相乘的char 的进位信息会存储在ansArray[i + j + 1]中
+            // 可以画图帮助理解
+            for (int i = str1.length() - 1; i >= 0; i--) {
+                int n1 = str1.charAt(i) - '0';
+                for (int j = str2.length() - 1; j >= 0; j--) {
+                    int n2 = str2.charAt(j) - '0';
+                    // 是否可以不使用mult
+                    int mult = n1 * n2 + ansArray[i + j + 1];
+                    ansArray[i + j + 1] = mult % 10;
+                    ansArray[i + j] += mult / 10;
+                }
+            }
+            StringBuilder sb = new StringBuilder();
+            for (int num : ansArray) {
+                if (num != 0 || sb.length() != 0){
+                    sb.append(num);
+                }
+            }
+            return sb.toString();
         }
     }
 //leetcode submit region end(Prohibit modification and deletion)
